@@ -59,12 +59,12 @@ def prepare():
     
     # 计算前20%和剩余80%的索引位置  
 
-    fraction_to_split = 0.1  
-    split_index = int(len(df) * fraction_to_split) 
+    fraction_to_split = 3  
+    split_index = int(len(df) -3) 
     # 将前20%的行存储到新的DataFrame中  
-    df_test = df.iloc[:split_index]  
+    df_test = df.iloc[split_index:]  
     # 将剩余的行（即后80%）存储到另一个新的DataFrame中 
-    df_traning = df.iloc[split_index:]  
+    df_traning = df  
     
     df_traning.sort_values(by='r', inplace=True, ascending=True)  
     df_test.sort_values(by='r', inplace=True, ascending=True)  
