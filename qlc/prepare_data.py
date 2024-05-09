@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from number_utils import *
 from yijing_utils import *
-root = "/home/lanceliang/cdpwork/ai/lottery/lottery_prediction/qlc/"
+root = "/home/lanceliang/cdpwork/ai/ddd/lottery_prediction/qlc/"
 
 
 def prepare():
@@ -62,11 +62,12 @@ def prepare():
     fraction_to_split = 3  
     split_index = int(len(df) -3) 
     # 将前20%的行存储到新的DataFrame中  
-    df_test = df.iloc[split_index:]  
+  
     # 将剩余的行（即后80%）存储到另一个新的DataFrame中 
     df_traning = df  
     
     df_traning.sort_values(by='r', inplace=True, ascending=True)  
+    df_test = df_traning.iloc[split_index:]  
     df_test.sort_values(by='r', inplace=True, ascending=True)  
     df_traning.to_csv(root+"data/prepared_traning_data.csv", index=False)
     df_test.to_csv(root+"data/prepared_test_data.csv", index=False)

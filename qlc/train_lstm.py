@@ -155,7 +155,20 @@ class LSTMClassifier(nn.Module):
         # reg_out = self.fc_reg(out) 
         # , reg_out  
         return class_output 
-  
+
+def predict(model, X):
+    model.eval()
+    with torch.no_grad():
+        outputs_class = model(X.float())
+        print("Class Predictions:", outputs_class)
+        print("Predicted labels for test data:")
+        for key, value in class_output.items():  
+            predicted_labels = value.argmax(dim=1)                        
+            print("Label ",key,":", predicted_labels[0].item()) 
+        
+        # class_preds = torch.argmax(outputs_class, dim=1)        
+        return outputs_class
+      
 # 初始化模型、损失函数和优化器  
 model = LSTMClassifier(input_size, hidden_size, num_layers, output_size_class)  
  
@@ -171,9 +184,7 @@ X_train, Y_train_class = load_traning_data()
 X_test, Y_test_class = load_test_data()   # 使用一半数量的样本作为测试集  
 print(X_test.size())
 print(X_test)
-# X_train, Y_train_class = X_train.to(device), Y_train_class.to(device,dtype=torch.int32)
-# X_test, Y_test_class = X_test.to(device), Y_test_class.to(device,dtype=torch.int32)
-  
+
 # 训练模型  
 train_losses_class = []
 
@@ -200,32 +211,21 @@ for epoch in range(num_epochs):
     if (epoch+1) % 10 == 0:  
         print(f'Epoch [{epoch+1}/{num_epochs}], Loss Class: {loss_class.item():.4f}')  
   
-# 绘制损失曲线  
+# # 绘制损失曲线  
 
-plt.figure(figsize=(10, 5))  
-plt.subplot(1, 2, 1)  
-plt.plot(train_losses_class, label='Training Loss Class')  
-plt.title('Training Losses')  
-plt.xlabel('Epoch')  
-plt.ylabel('Loss')  
-plt.legend()  
+# plt.figure(figsize=(10, 5))  
+# plt.subplot(1, 2, 1)  
+# plt.plot(train_losses_class, label='Training Loss Class')  
+# plt.title('Training Losses')  
+# plt.xlabel('Epoch')  
+# plt.ylabel('Loss')  
+# plt.legend()  
 
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
 
-def predict(model, X):
-    model.eval()
-    with torch.no_grad():
-        outputs_class = model(X.float())
-        print("Class Predictions:", outputs_class)
-        print("Predicted labels for test data:")
-        for key, value in class_output.items():  
-            predicted_labels = value.argmax(dim=1)                        
-            print("Label ",key,":", predicted_labels[0].item()) 
-        
-        # class_preds = torch.argmax(outputs_class, dim=1)        
-        return outputs_class
+
 
 print(X_test.size())
 
